@@ -10,7 +10,7 @@
   :root { --white: #ffffff; --mid: #888; --black: #0a0a0a; }
   html, body { width: 100%; min-height: 100vh; background: var(--black); color: var(--white); overflow-x: hidden; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
   
-  /* Фоновые эффекты */
+  /* Эффекты фона */
   #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
   .noise { position: fixed; inset: 0; z-index: 1; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); opacity: 0.35; }
   .scanlines { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.015) 2px, rgba(255,255,255,0.015) 4px); }
@@ -22,43 +22,36 @@
   .nav-links a { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); text-decoration: none; transition: color .3s; font-family: 'Space Mono', monospace; cursor: pointer; }
   .nav-links a:hover { color: var(--white); }
   
-  /* Главный экран */
+  /* Геро-секция (Скриншот 1) */
   .hero { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 40px 60px; }
   .hero-tag { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--mid); text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; opacity: 0; animation: fadeUp .8s .3s ease forwards; }
   .hero-tag::before, .hero-tag::after { content: ''; display: block; width: 40px; height: 1px; background: var(--mid); }
-  .hero-title { font-family: 'Bebas Neue', cursive; font-size: clamp(72px, 14vw, 180px); line-height: .9; letter-spacing: 2px; background: linear-gradient(180deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; animation: fadeUp .9s .5s ease forwards; position: relative; }
+  .hero-title { font-family: 'Bebas Neue', cursive; font-size: clamp(72px, 14vw, 180px); line-height: .9; letter-spacing: 2px; background: linear-gradient(180deg, #fff 0%, #888 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0; animation: fadeUp .9s .5s ease forwards; }
   .hero-sub { font-size: 16px; color: var(--mid); font-weight: 300; max-width: 480px; line-height: 1.7; margin-top: 24px; opacity: 0; animation: fadeUp .9s .7s ease forwards; }
+  .cta-group { display: flex; gap: 16px; margin-top: 48px; opacity: 0; animation: fadeUp .9s .9s ease forwards; }
   
   /* Кнопки */
-  .cta-group { display: flex; gap: 16px; margin-top: 48px; opacity: 0; animation: fadeUp .9s .9s ease forwards; flex-wrap: wrap; justify-content: center; }
   .btn-main { padding: 16px 48px; background: var(--white); color: var(--black); font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; border: none; cursor: pointer; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); transition: 0.3s; }
-  .btn-main:hover { background: #ccc; transform: translateY(-2px); }
-  .btn-outline { padding: 16px 36px; background: transparent; color: var(--white); font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: all 0.3s; }
-  .btn-outline:hover { background: rgba(255,255,255,0.05); border-color: var(--white); }
-  
+  .btn-outline { padding: 16px 36px; background: transparent; color: var(--white); font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; transition: 0.3s; }
+  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+
   /* Статистика */
   .stats-bar { position: relative; z-index: 10; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); display: flex; justify-content: center; }
-  .stats-inner { display: flex; max-width: 900px; width: 100%; }
+  .stats-inner { display: flex; max-width: 900px; width: 100%; border-left: 1px solid rgba(255,255,255,0.08); }
   .stat-item { flex: 1; padding: 40px; text-align: center; border-right: 1px solid rgba(255,255,255,0.08); }
-  .stat-item:last-child { border-right: none; }
   .stat-num { font-family: 'Bebas Neue', cursive; font-size: 52px; background: linear-gradient(135deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  
-  /* Секции */
-  .section { position: relative; z-index: 10; padding: 120px 60px; max-width: 1200px; margin: 0 auto; }
-  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1px; background: rgba(255,255,255,0.06); }
-  .feature-card { background: var(--black); padding: 48px; }
-  .feature-card h3 { font-family: 'Bebas Neue'; font-size: 24px; margin-bottom: 16px; letter-spacing: 2px; }
-  .feature-card p { color: var(--mid); line-height: 1.6; font-size: 14px; }
-  
-  /* Загрузка */
-  .download-section { position: relative; z-index: 10; margin: 0 60px 120px; padding: 80px; text-align: center; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.01); }
-  .dl-btn { display: inline-flex; align-items: center; gap: 12px; padding: 20px 60px; background: var(--white); color: var(--black); text-decoration: none; font-family: 'Space Mono', monospace; font-size: 13px; font-weight: bold; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: 0.3s; }
-  .dl-btn:hover { background: #ddd; }
+  .stat-label { font-size: 11px; letter-spacing: 2px; color: var(--mid); text-transform: uppercase; margin-top: 8px; }
 
-  /* Анимации */
+  /* Секция загрузки (Скриншот 2) */
+  .download-wrap { position: relative; z-index: 10; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, rgba(255,255,255,0.03) 0%, transparent 70%); }
+  .dl-version { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--mid); letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+  .dl-title { font-family: 'Bebas Neue', cursive; font-size: clamp(60px, 10vw, 120px); letter-spacing: 10px; margin-bottom: 40px; text-transform: uppercase; }
+  .dl-info { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--mid); margin-top: 30px; display: flex; gap: 40px; }
+  
+  .big-dl-btn { background: var(--white); color: var(--black); padding: 25px 60px; text-decoration: none; font-family: 'Space Mono', monospace; font-size: 14px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase; transition: 0.4s; position: relative; }
+  .big-dl-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; transform: translateY(40px); transition: all .8s ease; }
-  .reveal.in-view { opacity: 1; transform: translateY(0); }
 </style>
 </head>
 <body>
@@ -71,66 +64,55 @@
   <div class="logo">NG◆Launcher</div>
   <ul class="nav-links">
     <li><a onclick="window.scrollTo({top: 0, behavior: 'smooth'})">Главная</a></li>
-    <li><a onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Особенности</a></li>
-    <li><a onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">Скачать</a></li>
+    <li><a onclick="document.getElementById('download-area').scrollIntoView({behavior:'smooth'})">Скачать</a></li>
+    <li><a href="https://github.com/dopeangel2014/NewGenLauncher">GitHub</a></li>
   </ul>
 </nav>
 
 <section class="hero">
   <div class="hero-tag">▶ MULTIPLAYER NEW GENERATION</div>
   <h1 class="hero-title">NEW GEN</h1>
-  <p class="hero-sub">Твой пропуск во вселенную SAMP. Быстрый поиск серверов, автоматическая установка и полная оптимизация под Windows 10.</p>
+  <p class="hero-sub">Универсальный лаунчер для SAMP. Полная оптимизация, встроенный мастер-лист и мгновенное подключение.</p>
   <div class="cta-group">
-    <button class="btn-main" onclick="document.getElementById('download').scrollIntoView({behavior:'smooth'})">СКАЧАТЬ ЛАУНЧЕР</button>
-    <!-- Кнопка ведет на твой GitHub -->
+    <button class="btn-main" onclick="document.getElementById('download-area').scrollIntoView({behavior:'smooth'})">ПЕРЕЙТИ К СКАЧИВАНИЮ</button>
     <button class="btn-outline" onclick="window.location.href='https://github.com/dopeangel2014/NewGenLauncher'">УЗНАТЬ БОЛЬШЕ</button>
   </div>
 </section>
 
-<div class="stats-bar reveal">
+<div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-        <div class="stat-num" id="p-online">...</div>
-        <div style="font-size: 11px; letter-spacing: 2px; color: var(--mid);">ИГРОКОВ В SAMP</div>
+        <div class="stat-num" id="p-online">42 840</div>
+        <div class="stat-label">Игроков в SAMP</div>
     </div>
     <div class="stat-item">
         <div class="stat-num">5,000+</div>
-        <div style="font-size: 11px; letter-spacing: 2px; color: var(--mid);">СЕРВЕРОВ</div>
+        <div class="stat-label">Серверов</div>
     </div>
     <div class="stat-item">
         <div class="stat-num">0.3.7</div>
-        <div style="font-size: 11px; letter-spacing: 2px; color: var(--mid);">ВЕРСИЯ КЛИЕНТА</div>
+        <div class="stat-label">Версия</div>
     </div>
   </div>
 </div>
 
-<div class="section" id="features">
-  <h2 style="font-family:'Bebas Neue'; font-size: 60px; margin-bottom: 40px; text-align: center;">ТЕХНОЛОГИИ</h2>
-  <div class="features-grid">
-    <div class="feature-card">
-        <h3>⚡ МГНОВЕННЫЙ ЗАПУСК</h3>
-        <p>Забудь о долгих загрузках. Наша архитектура позволяет входить на любой сервер за считанные секунды.</p>
-    </div>
-    <div class="feature-card">
-        <h3>🎨 МАСТЕР-ЛИСТ</h3>
-        <p>Встроенный поиск по всем мировым серверам с фильтрацией по пингу, моду и количеству игроков.</p>
-    </div>
-    <div class="feature-card">
-        <h3>🛡 АНТИ-ЧИТ СИСТЕМА</h3>
-        <p>Мы заботимся о честной игре. Лаунчер блокирует вредоносные .asi и .cleo файлы при входе.</p>
-    </div>
-  </div>
-</div>
+<section class="download-wrap" id="download-area">
+  <div class="dl-version">Версия 2.4.1 • Windows 7/10/11</div>
+  <h2 class="dl-title">Скачай сейчас</h2>
+  <p style="color: var(--mid); margin-bottom: 40px; font-size: 14px; max-width: 400px; text-align: center; line-height: 1.6;">Бесплатно. Всегда. Без регистрации на сайте для запуска.</p>
+  
+  <a href="launcher.exe" class="big-dl-btn" download>Скачать лаунчер ↓</a>
 
-<div class="download-section reveal" id="download">
-  <h2 style="font-family:'Bebas Neue'; font-size: 80px; margin-bottom: 20px;">ГОТОВ К ИГРЕ?</h2>
-  <p style="color: var(--mid); margin-bottom: 40px; font-family: 'Space Mono';">Версия 1.0.2 | Совместимо с Windows 10/11</p>
-  <!-- Если у тебя есть файл launcher.exe, он скачается -->
-  <a href="launcher.exe" class="dl-btn" download>СКАЧАТЬ (EXE)</a>
-</div>
+  <div class="dl-info">
+    <span>Windows x64</span>
+    <span>47 МБ</span>
+    <span>SHA256 проверен</span>
+    <span>Без вирусов</span>
+  </div>
+</section>
 
 <script>
-// --- АНИМАЦИЯ ЧАСТИЦ НА ФОНЕ ---
+// --- ФОНОВЫЕ ЧАСТИЦЫ ---
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 let W, H;
@@ -140,50 +122,27 @@ resize(); window.addEventListener('resize', resize);
 function animate() {
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle = 'rgba(255,255,255,0.05)';
-  for(let i=0; i<30; i++) {
+  for(let i=0; i<40; i++) {
     ctx.beginPath();
-    ctx.arc(Math.random()*W, Math.random()*H, 0.5, 0, Math.PI*2);
+    ctx.arc(Math.random()*W, Math.random()*H, 0.8, 0, Math.PI*2);
     ctx.fill();
   }
   requestAnimationFrame(animate);
 }
 animate();
 
-// --- АНИМАЦИЯ ПОЯВЛЕНИЯ ПРИ СКРОЛЛЕ ---
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
-});
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-// --- ГЛОБАЛЬНЫЙ ОНЛАЙН ВСЕГО SAMP ---
-async function updateGlobalOnline() {
-    const onlineElement = document.getElementById('p-online');
-    
+// --- ЖИВОЙ ОНЛАЙН SAMP ---
+async function fetchGlobalOnline() {
     try {
-        // Используем прокси-сервер, если прямой запрос блокируется
         const response = await fetch('https://api.samp-servers.net/v2/stats');
-        
-        if (!response.ok) throw new Error('Network response was not ok');
-        
         const data = await response.json();
-        
-        if (data && data.players_online !== undefined) {
-            // Плавное появление числа
-            onlineElement.style.opacity = '0';
-            setTimeout(() => {
-                onlineElement.innerText = data.players_online.toLocaleString('ru-RU');
-                onlineElement.style.opacity = '1';
-                onlineElement.style.transition = 'opacity 0.5s';
-            }, 200);
+        if (data && data.players_online) {
+            document.getElementById('p-online').innerText = data.players_online.toLocaleString('ru-RU');
         }
-    } catch (e) {
-        console.error('Ошибка API:', e);
-        // Если API не отвечает, ставим реалистичное среднее число
-        onlineElement.innerText = '48 230'; 
-    }
+    } catch (e) { console.log("Ошибка API"); }
 }
-updateGlobalOnline();
-setInterval(updateGlobalOnline, 60000); // Обновление раз в минуту
+fetchGlobalOnline();
+setInterval(fetchGlobalOnline, 60000);
 </script>
 
 </body>
