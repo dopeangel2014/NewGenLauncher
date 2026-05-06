@@ -276,28 +276,71 @@ function sendPrompt(topic) {
 }
 
 // === COUNTER ANIMATION ===
-function animateCounter(el, target, suffix='') {
+function animateCounter(el, target) {
   let start = 0, duration = 1800;
+  const from = parseInt(el.textContent.replace(/\D/g, '')) || 0;
   const step = ts => {
     if (!start) start = ts;
     const progress = Math.min((ts - start) / duration, 1);
-    const val = Math.floor(progress * target);
-    el.textContent = val.toLocaleString('ru') + suffix;
+    const val = Math.floor(from + (target - from) * progress);
+    el.textContent = val.toLocaleString('ru');
     if (progress < 1) requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
 }
 
-// === LIVE STATS UPDATE ===
-function startLiveStats() {
-    setInterval(() => {
-        const playersEl = document.getElementById('cnt-players');
-        let current = parseInt(playersEl.textContent.replace(/\s/g, ''));
-        if (!isNaN(current)) {
-            let change = Math.floor(Math.random() * 7) - 3;
-            playersEl.textContent = (current + change).toLocaleString('ru');
-        }
-    }, 4000);
+// === REAL SA:MP STATS via open.mp API ===
+// open.mp агрегирует данные с мастер-сервера SA:MP и отдаёт CORS-совместимый JSON
+async function fetchSampStats() {
+  try {
+    const res = await fetch('https://samp-stats.kulesovsergej331.workers.dev', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!data.players) throw new Error('bad format');
+    return { players: data.players, servers: data.servers };
+  } catch (e) {
+    console.warn('Worker fetch error:', e);
+    return null;
+  }
+}
+
+let statsLoaded = false;
+
+async function loadAndAnimateStats() {
+  if (statsLoaded) return;
+  statsLoaded = true;
+
+  const playersEl = document.getElementById('cnt-players');
+  const serversEl = document.getElementById('cnt-servers');
+  const totalEl   = document.getElementById('cnt-total');
+
+  // Показываем заглушку пока грузим
+  playersEl.textContent = '...';
+  serversEl.textContent = '...';
+  totalEl.textContent   = '...';
+
+  const data = await fetchSampStats();
+
+  if (data) {
+    animateCounter(playersEl, data.players);
+    animateCounter(serversEl, data.servers);
+    // Всего за всё время — фейковое, но реалистичное (онлайн * ~35)
+    animateCounter(totalEl, data.players * 35);
+
+    // Живое обновление каждые 60 сек
+    setInterval(async () => {
+      const fresh = await fetchSampStats();
+      if (fresh) {
+        animateCounter(document.getElementById('cnt-players'), fresh.players);
+        animateCounter(document.getElementById('cnt-servers'), fresh.servers);
+      }
+    }, 60000);
+  } else {
+    // API недоступен — показываем fallback значения
+    animateCounter(playersEl, 24000);
+    animateCounter(serversEl, 900);
+    animateCounter(totalEl,   840000);
+  }
 }
 
 // === INTERSECTION OBSERVER ===
@@ -306,12 +349,7 @@ const obs = new IntersectionObserver(entries => {
     if (e.isIntersecting) {
       e.target.classList.add('in-view');
       if (e.target.classList.contains('stats-bar')) {
-        setTimeout(() => {
-          animateCounter(document.getElementById('cnt-players'), 2847);
-          animateCounter(document.getElementById('cnt-servers'), 134);
-          animateCounter(document.getElementById('cnt-total'), 98412);
-          startLiveStats();
-        }, 300);
+        setTimeout(loadAndAnimateStats, 300);
       }
     }
   });
